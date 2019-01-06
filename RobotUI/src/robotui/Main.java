@@ -128,7 +128,7 @@ public class Main extends Application {
 	private static String timeStamp;
 	private static CheckBox includeCommands, includePowerReports;
 	private static TableView reports;
-	private static TableColumn resCol, sumTagCol;
+	private static TableColumn resCol, sumTagCol, repDateCol;
 	
 	
 
@@ -492,9 +492,10 @@ public static VBox sideStuffLeft(Stage stage) {
 		
 		resCol = new TableColumn("Resolved?");
 		sumTagCol = new TableColumn("Report Title");
+		repDateCol = new TableColumn("Report Date");
 		
 		
-		reports.getColumns().addAll(resCol, sumTagCol);
+		reports.getColumns().addAll(resCol, sumTagCol, repDateCol);
 		
 		return reports;
 	}
