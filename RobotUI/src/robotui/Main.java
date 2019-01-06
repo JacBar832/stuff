@@ -209,42 +209,15 @@ public class Main extends Application {
 			
 			mainScreen = new MenuItem("Main Screen");
 				//What happens when you click it:
-				mainScreen.setOnAction(new EventHandler<ActionEvent>() {
-					
-					@Override
-					public void handle(ActionEvent event) {
-						stage.setScene(scene1);	//tabs[0] is the first screen you see, all this does is take you to it
-						//menuTitles[0].setVisible(true);			
-					}
-					
-					
-				});
+				mainScreen.setOnAction((event)->{stage.setScene(scene1);});
 				
 			powerMonitor = new MenuItem("Power Monitor");
 				//What happens when you click it:
-				powerMonitor.setOnAction(new EventHandler<ActionEvent>() {
-					
-					@Override
-					public void handle(ActionEvent event) {
-						
-						stage.setScene(sceneTwo);	//tabs[1] is the screen where you see the Power Monitor
-						//menuTitles[1].setVisible(true);
-					}
-					
-				});
+				powerMonitor.setOnAction((event)->{stage.setScene(sceneTwo);});
 				
 			robotStatus = new MenuItem("Robot Status");
 				//What happens when you click it:
-				robotStatus.setOnAction(new EventHandler<ActionEvent>() {
-					
-					@Override
-					public void handle(ActionEvent event) {
-						
-						stage.setScene(sceneThree);	//tabs[2] is the screen where you see the subsystem check
-						//menuTitles[2].setVisible(true);
-					}
-					
-				});
+				robotStatus.setOnAction((event)->{stage.setScene(sceneThree);});
 			
 			
 			
