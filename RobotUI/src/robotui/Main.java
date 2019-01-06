@@ -1,6 +1,7 @@
 package robotui;
 	
 import javafx.application.Application;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
@@ -113,13 +114,14 @@ public class Main extends Application {
 	
 	
 	//Left Side Problem Reporting System
-	private static TextField userError;
+	private static TextField userError, summaryTag;
 	private static Clock userGen = Clock.systemDefaultZone();
 	private static Instant currentTime;
 	private static VBox report;
 	private static Label purpose;
 	private static Formatter errorReport;
 	private static DateTimeFormatter formatter;
+	private static String timeStamp;
 	
 
 	private static Clock timer = Clock.systemUTC();
@@ -330,41 +332,46 @@ public static VBox sideStuffLeft(Stage stage) {
 		leftSide = new VBox();
 		leftSide.setPadding(new Insets(10));
 		leftSide.setSpacing(10);
-		//leftSide.setMinWidth(50);
 		leftSide.setMinWidth(250);
 		
-		//leftSide.getChildren().add(voltageMeter());
 		
 		report = new VBox();
 		report.setPadding(new Insets(10));
 		report.setSpacing(10);
 		
 		userError = new TextField();
+		userError.setPromptText("Problem Report Here");
+		
+		summaryTag = new TextField();
+		summaryTag.setPromptText("Report Title Here");
+		
 		purpose = new Label("Report Issues Here: ");
 		currentTime = Instant.now(userGen);
 		formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.US).withZone(ZoneId.systemDefault());
 		
-		
-		String timeStamp = formatter.format(currentTime);
+		timeStamp = formatter.format(currentTime);
 		
 		Button rep = new Button("Submit Report");
 		
 		//Here Users will report Issues:
 		
 		rep.setOnAction(new EventHandler<ActionEvent>() {
-		
+			
+			ObservableValue<? extends Integer> counter;
+			int i = 0;
+			
 			@Override
 			public void handle(ActionEvent event) {
 				
-//				try {
-//					errorReport = new Formatter("src/userInputPractice/Report.txt");
-//					errorReport.format("%s %s", timeStamp, userError.getText());
-//					errorReport.close();
-//					}catch(Exception e) {
-//						
-//						System.err.println("Error: " + e);
-//						
-//					}	
+				try {
+					errorReport = new Formatter("src/userInputPractice/" + summaryTag.getText() + ".txt");
+					errorReport.format("%s %s", timeStamp, userError.getText());
+					errorReport.close();
+					}catch(Exception e) {
+						
+						System.err.println("Error: " + e);
+						
+					}	
 				
 			}
 			
