@@ -45,6 +45,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;		
 import java.time.format.FormatStyle;			
 
+
 //I need this to update the linechart in real time
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -57,6 +58,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.Formatter;
 import java.util.Locale;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
+
 
 	@Author(
 			name = "Jacob Barba",
@@ -123,6 +127,9 @@ public class Main extends Application {
 	private static DateTimeFormatter formatter;
 	private static String timeStamp;
 	private static CheckBox includeCommands, includePowerReports;
+	private static TableView reports;
+	private static TableColumn resCol, sumTagCol;
+	
 	
 
 	private static Clock timer = Clock.systemUTC();
@@ -267,7 +274,8 @@ public class Main extends Application {
 		
 		//Video Feed
 		
-		Image image = new Image(getClass().getResourceAsStream("steveharvey.jpeg"));	//Stand in for eventual feed
+		Image image = new Image(getClass().getResourceAsStream("steveharvey.jpeg"));//Stand in for eventual feed
+		
 		ImageView videoFeed = new ImageView(image);	//this is the actual videofeed
 		
 		videoFeed.setId("video-feed");//css stuff
@@ -402,7 +410,9 @@ public static VBox sideStuffLeft(Stage stage) {
 		
 		report.getChildren().addAll(purpose, summaryTag, userError, includeCommands, includePowerReports, rep);
 		
-		leftSide.getChildren().add(report);
+		Label curRep = new Label("Current Reports: ");
+		
+		leftSide.getChildren().addAll(report, curRep, reports());
 		
 		
 		leftSide.setId("sideMenu");
@@ -473,6 +483,20 @@ public static VBox sideStuffLeft(Stage stage) {
 	
 	
 	
+	
+	
+	public static TableView reports() {
+		
+		reports = new TableView();
+		reports.setEditable(true);
+		
+		resCol = new TableColumn("Resolved?");
+		sumTagCol = new TableColumn("Report Title");
+		
+		
+		reports.getColumns().addAll(resCol, sumTagCol);
+		
+		return reports;
 	}
 
-	
+	}
