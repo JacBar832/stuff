@@ -30,7 +30,7 @@
 #sideMenu{
 	
 	-fx-background-color: #a9a9a9;
-	-fx-opacity: .5;
+	-fx-opacity: .95;
 }
 
 #video-feed{
@@ -43,7 +43,7 @@
 #HBox{
 	
 	-fx-background-color: #2f4f4f;
-	-fx-opacity: .75;
+	-fx-opacity: .95;
 	-fx-text-fill: #ffffff;
 	
 }

@@ -56,7 +56,7 @@ import java.util.concurrent.ScheduledExecutorService;
 //User Reporting
 import java.util.Formatter;
 import java.util.Locale;
-	
+import javafx.scene.control.CheckBox;
 
 	@Author(
 			name = "Jacob Barba",
@@ -122,6 +122,7 @@ public class Main extends Application {
 	private static Formatter errorReport;
 	private static DateTimeFormatter formatter;
 	private static String timeStamp;
+	private static CheckBox includeCommands, includePowerReports;
 	
 
 	private static Clock timer = Clock.systemUTC();
@@ -280,7 +281,7 @@ public class Main extends Application {
 		VBox command = new VBox();
 		command.setId("HBox");
 		Label currentCommand = new Label("Current Command: " );
-		//currentCommand.setStyle("-fx-text-fill: #ffffff;");
+		currentCommand.setStyle("-fx-text-fill: #ffffff;");
 		
 		
 		
@@ -298,7 +299,7 @@ public class Main extends Application {
 	}
 	
 	
-	public static VBox sideStuffRight(Stage stage) {
+public static VBox sideStuffRight(Stage stage) {
 		
 		leftSide = new VBox();
 		leftSide.setPadding(new Insets(10));
@@ -307,13 +308,11 @@ public class Main extends Application {
 		leftSide.setMinWidth(250);
 		
 		VBox labels = new VBox();
-		labels.setPadding(new Insets(10));
-		labels.setSpacing(10);
-		
+				
 		Label powerIssues = new Label("Power Status: ");
 		powerIssues.setId("powerIssues");
 		
-		Label potIssues = new Label("\tPotential Issues: ");
+		Label potIssues = new Label("Potential Issues: ");
 		potIssues.setId("potIssues");
 		
 		labels.setId("labelbox");
@@ -335,30 +334,53 @@ public static VBox sideStuffLeft(Stage stage) {
 		leftSide.setMinWidth(250);
 		
 		
+		//
+		//	ERROR REPORTING SERVICE:
+		//
+		
 		report = new VBox();
 		report.setPadding(new Insets(10));
 		report.setSpacing(10);
 		
-		userError = new TextField();
+		purpose = new Label("Report Issues Here: ");	//Section Title
+		
+		userError = new TextField();					//User report here
 		userError.setPromptText("Problem Report Here");
 		
-		summaryTag = new TextField();
+		summaryTag = new TextField();					//.txt file title here for the reports
 		summaryTag.setPromptText("Report Title Here");
 		
-		purpose = new Label("Report Issues Here: ");
-		currentTime = Instant.now(userGen);
+		
+		currentTime = Instant.now(userGen);				//Stuff needed to make timestamps for reports
 		formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.US).withZone(ZoneId.systemDefault());
 		
 		timeStamp = formatter.format(currentTime);
 		
+		includeCommands = new CheckBox("Include Commands of Last 5min");
+		includeCommands.setSelected(false);
+		includeCommands.setIndeterminate(false);
+		
+		includePowerReports = new CheckBox("Include Power Reports of Last 5min");
+		includePowerReports.setSelected(false);
+		includePowerReports.setIndeterminate(false);
+		
+		
+		
 		Button rep = new Button("Submit Report");
 		
-		//Here Users will report Issues:
+		
+		
+		//Here Users will submit their reports,
+		
+		//	Note, the only reason this button doesn't use a lambda function is
+		//	because I need it to actually write the report; however, I think the
+		//	best course of action here will be using a new thread to do this, like
+		//	the oracle tutorial recommends, however, I'm not sure what will be the
+		//	best way to do this, instantiating an object here or making a class for
+		//	it that implements "Runnable", or if there's another way.
+		
 		
 		rep.setOnAction(new EventHandler<ActionEvent>() {
-			
-			ObservableValue<? extends Integer> counter;
-			int i = 0;
 			
 			@Override
 			public void handle(ActionEvent event) {
@@ -378,7 +400,7 @@ public static VBox sideStuffLeft(Stage stage) {
 		});
 		
 		
-		report.getChildren().addAll(purpose, userError, rep);
+		report.getChildren().addAll(purpose, summaryTag, userError, includeCommands, includePowerReports, rep);
 		
 		leftSide.getChildren().add(report);
 		
@@ -435,6 +457,8 @@ public static VBox sideStuffLeft(Stage stage) {
 		
 		
 		lineChart.getData().add(series);
+		lineChart.setCreateSymbols(false);
+		
 		task = Executors.newSingleThreadScheduledExecutor();
 		task.scheduleAtFixedRate(dataUpdate, 0, 500, TimeUnit.MILLISECONDS);
 		
