@@ -64,7 +64,7 @@ import javafx.scene.control.TableColumn;
 
 	@Author(
 			name = "Jacob Barba",
-			date = "1/4/2019"
+			date = "1/6/2019"
 			)
 
 /*
@@ -393,15 +393,7 @@ public static VBox sideStuffLeft(Stage stage) {
 			@Override
 			public void handle(ActionEvent event) {
 				
-				try {
-					errorReport = new Formatter("src/userInputPractice/" + summaryTag.getText() + ".txt");
-					errorReport.format("%s %s", timeStamp, userError.getText());
-					errorReport.close();
-					}catch(Exception e) {
-						
-						System.err.println("Error: " + e);
-						
-					}	
+				
 				
 			}
 			
