@@ -2,6 +2,8 @@ package robotui;
 	
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
@@ -18,6 +20,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 
@@ -127,7 +131,7 @@ public class Main extends Application {
 	private static DateTimeFormatter formatter;
 	private static String timeStamp;
 	private static CheckBox includeCommands, includePowerReports;
-	private static TableView reports;
+	private static TableView<userReport> reports;
 	private static TableColumn resCol, sumTagCol, repDateCol;
 	
 	
@@ -372,11 +376,31 @@ public static VBox sideStuffLeft(Stage stage) {
 		includePowerReports.setSelected(false);
 		includePowerReports.setIndeterminate(false);
 		
+		reports = new TableView<>();
+		reports.setEditable(true);
 		
+		//Table Columns
+//		resCol = new TableColumn("Resolved?");
+//		resCol.setCellFactory(new CheckBoxTableCell<>());
+		
+		sumTagCol = new TableColumn("Report Title");
+		sumTagCol.setCellValueFactory(new PropertyValueFactory<>("reportTitle"));
+		
+		repDateCol = new TableColumn("Report Date");
+		repDateCol.setCellValueFactory(new PropertyValueFactory<>("reportDate"));
+		
+		
+		final ObservableList<userReport> data = FXCollections.observableArrayList(new userReport("Test", "Test2"), new userReport("Test1", "Test3"));
+		
+		reports.setItems(data);
+		
+		
+		
+		reports.getColumns().addAll(sumTagCol, repDateCol);
 		
 		Button rep = new Button("Submit Report");
 		
-		
+		rep.setOnAction((event)->{data.add(new userReport(summaryTag.getText(), userError.getText()));});
 		
 		//Here Users will submit their reports,
 		
@@ -388,23 +412,14 @@ public static VBox sideStuffLeft(Stage stage) {
 		//	it that implements "Runnable", or if there's another way.
 		
 		
-		rep.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent event) {
-				
-				
-				
-			}
-			
-		});
 		
 		
-		report.getChildren().addAll(purpose, summaryTag, userError, includeCommands, includePowerReports, rep);
+		
+		report.getChildren().addAll(purpose, summaryTag, userError, includeCommands, includePowerReports, reports, rep);
 		
 		Label curRep = new Label("Current Reports: ");
 		
-		leftSide.getChildren().addAll(report, curRep, reports());
+		leftSide.getChildren().addAll(report, curRep);
 		
 		
 		leftSide.setId("sideMenu");
@@ -476,20 +491,6 @@ public static VBox sideStuffLeft(Stage stage) {
 	
 	
 	
-	
-	public static TableView reports() {
-		
-		reports = new TableView();
-		reports.setEditable(true);
-		
-		resCol = new TableColumn("Resolved?");
-		sumTagCol = new TableColumn("Report Title");
-		repDateCol = new TableColumn("Report Date");
-		
-		
-		reports.getColumns().addAll(resCol, sumTagCol, repDateCol);
-		
-		return reports;
-	}
+
 
 	}

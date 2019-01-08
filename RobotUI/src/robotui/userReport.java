@@ -16,14 +16,14 @@ import java.nio.file.Paths;
 
 public class userReport{
 	
-	private final SimpleStringProperty reportTitle;
-	private final SimpleStringProperty reportDate;
+	public final SimpleStringProperty reportTitle;
+	public final SimpleStringProperty reportDate;
 	private static DateTimeFormatter format;
 	private static Instant timeStamp;
 	private Formatter errorReport;
 	private static Path filePath;
 	
-	private userReport(String title, TextField summaryTag, TextField userError){
+	userReport(String title, String userError){
 		
 		
 		userReport.timeStamp = Instant.now();
@@ -31,9 +31,21 @@ public class userReport{
 		
 		filePath = Paths.get("C:/Users/../Documents/User Reports");
 		
-		
+		//writeReport(title, userError);
 		this.reportTitle = new SimpleStringProperty(title);
 		this.reportDate = new SimpleStringProperty(format.format(timeStamp));
+		
+		
+	}
+	
+	public SimpleStringProperty getTitle() {
+		return this.reportTitle;
+	}
+	public SimpleStringProperty getDate() {
+		return this.reportDate;
+	}
+	
+	private void writeReport(TextField summaryTag, TextField userError) {
 		
 		try {
 			errorReport = new Formatter(filePath + summaryTag.getText() + ".txt");
@@ -44,17 +56,6 @@ public class userReport{
 				System.err.println("Error: " + e);
 				
 			}	
-	}
-	
-	public SimpleStringProperty getTitle() {
-		return this.reportTitle;
-	}
-	public SimpleStringProperty getDate() {
-		return this.reportDate;
-	}
-	
-	private void writeReport() {
-		
 		
 	}
 }
